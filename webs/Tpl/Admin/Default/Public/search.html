@@ -1,0 +1,15 @@
+<div class="clearfix">
+	<form class="form-horizontal" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/'.ACTION_NAME)}" method="POST">
+		<div class="form-group">
+			<div class="col-xs-6 col-sm-6 col-md-4">
+				<input class="pull-left form-control" name="keys" id="keys" value="{$Think.request.keys}" placeholder="请输入关键字">
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 nopadding">
+				<button type="submit" class="pull-left btn btn-primary">搜索</button>
+			</div>
+			<div class="col-xs-4 col-sm-4 col-md-3 col-md-offset-3 text-right">
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal" data-action="add" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus nomargin"></i>&nbsp;添加</button>
+			</div>
+		</div>
+	</form>
+</div>

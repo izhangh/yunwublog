@@ -1,0 +1,214 @@
+<extend name="Public:base" />
+<block name="appendHeader">
+</block>
+<block name="appendContent">
+    <div class="row">
+        <div class="col-md-12 p15 p25">
+            <div class="page-header clearfix">
+                <h3 class="pull-left nomargin"><i class='fa fa-{$Think.session.curMenu.icon}'></i>{$Think.session.curMenu.name}</h3>
+            </div>
+            <div class="panel-body mt25">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" style="color:#0095CA;">基础信息修改</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" style="color:#0095CA;">密码修改</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <div class="panel panel-body mt20">
+                            <form class="form-horizontal" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormBaseInfor" name="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormBaseInfor" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/handle')}" method="post">
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-md-offset-1 control-label">姓名:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="manage_name" name="manage_name" data-bv-field="manage_name" value="{$data['manage_name']}" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-md-offset-1 control-label">电话:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="manage_phone" name="manage_phone" data-bv-field="manage_phone" value="{$data['manage_phone']}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-md-offset-1 control-label">管理员微信号:</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="manage_weixin" name="manage_weixin" data-bv-field="manage_weixin" value="{$data['manage_weixin']}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-md-offset-1 control-label">备注简介:</label>
+                                    <div class="col-sm-6">
+                                        <textarea class="form-control" style="resize:vertical;" id="remark" name="remark">{$data['remark']}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-md-offset-1 control-label">选择头像:</label>
+                                    <div class="col-sm-2">
+                                        <div class="checkbox">
+                                            <label class="nopadding">
+                                                <input type="radio" name="img" value="default-user.jpg" <eq name="data.img" value="default-user.jpg">checked</eq>> 默认头像
+                                            </label>
+                                            <img src="__PUBLIC__/common/image/default-user.jpg" class="img-thumbnail" width="100%" alt="默认头像">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="checkbox">
+                                            <label class="nopadding">
+                                                <input type="radio" name="img" value="default-male.jpg" <eq name="data.img" value="default-male.jpg">checked</eq>> 我是帅哥
+                                            </label>
+                                            <img src="__PUBLIC__/common/image/default-male.jpg" class="img-thumbnail" width="100%" alt="默认头像">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="checkbox">
+                                            <label class="nopadding">
+                                                <input type="radio" name="img" value="default-female.jpg" <eq name="data.img" value="default-female.jpg">checked</eq>> 我是美女
+                                            </label>
+                                            <img src="__PUBLIC__/common/image/default-female.jpg" class="img-thumbnail" width="100%" alt="默认头像">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <div class="col-sm-8">
+                                        <input type='hidden' name='id' id='base_infor_id' value="{$id}" />
+                                        <input type='hidden' name='_method_' id='base_info_id_method_' value='edit' />
+                                        <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">确认修改</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+                        <div class="panel panel-body mt20">
+                            <form class="form-horizontal" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormPwdModify" name="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormPwdModify" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/handle')}" method="post">
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-md-offset-1 control-label">请输入新密码:</label>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control" id="pwd" name="pwd" data-bv-field="pwd" value=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-md-offset-1 control-label">再次输入新密码:</label>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control" id="re_pwd" name="re_pwd" data-bv-field="re_pwd" value="{$data['end_date']}" />
+                                    </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <div class="col-sm-8">
+                                        <input type='hidden' name='id' id='pwd_id' value="{$id}" />
+                                        <input type='hidden' name='_method_' id='_method_' value='edit' />
+                                        <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">确认修改</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="appendFooter">
+    <script>
+        $(document).ready(function() {
+            $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormBaseInfor').bootstrapValidator({
+                message: '您输入的信息有误，请仔细检查！',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    manage_name: {
+                        validators: {
+                            notEmpty: {
+                                message: '名字不能为空'
+                            }
+                        }
+                    },
+                    manage_phone: {
+                        validators: {
+                            notEmpty: {
+                                message: '电话不能为空'
+                            }
+                        }
+                    },
+                    manage_weixin: {
+                        validators: {
+                            notEmpty: {
+                                message: '微信不能为空'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function(e) {
+                e.preventDefault();
+                var $form = $(e.target);    //获取表单实例
+                var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+                //对modal处理
+                confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
+                //ajax处理
+                ajaxDo($form.attr('action'), $form.serialize(), "POST");
+                if(ajaxReturnData.status == '200') {
+                    confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+                    setTimeout(function() {
+                        window.location.replace(window.location.href);
+                    }, 1000);
+                } else if(ajaxReturnData.status == '300') {
+                    confirmModalInfo(ajaxReturnData.info, '');
+                    setTimeout(function() {
+                        confirmModalClose();
+                    }, 1000);
+                }
+            });
+            $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormPwdModify').bootstrapValidator({
+                message: '您输入的信息有误，请仔细检查！',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    pwd: {
+                        validators: {
+                            notEmpty: {
+                                message: '新密码不能为空'
+                            }
+                        }
+                    },
+                    re_pwd: {
+                        validators: {
+                            notEmpty: {
+                                message: '请再次输入新密码'
+                            },
+                            identical: {
+                                field: 'pwd',
+                                message: '两次输入的新密码不相同'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function(e) {
+                e.preventDefault();
+                var $form = $(e.target);    //获取表单实例
+                var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+                //对modal处理
+                confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
+                //ajax处理
+                ajaxDo($form.attr('action'), $form.serialize(), "POST");
+                if(ajaxReturnData.status == '200') {
+                    confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+                    setTimeout(function() {
+                        window.location.replace(window.location.href);
+                    }, 1000);
+                } else if(ajaxReturnData.status == '300') {
+                    confirmModalInfo(ajaxReturnData.info, '');
+                    setTimeout(function() {
+                        confirmModalClose();
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</block>

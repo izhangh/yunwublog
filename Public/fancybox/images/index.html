@@ -1,0 +1,102 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="imagetoolbar" content="no" />
+	<title>FancyBox - fancy image zooming tool</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="fancy.css" media="screen" />
+	<script type="text/javascript" src="jquery-1.2.3.pack.js"></script>
+	<script type="text/javascript" src="jquery.metadata.js"></script>
+	<script type="text/javascript" src="jquery.pngFix.pack.js"></script>
+	<script type="text/javascript" src="jquery.fancybox-1.0.0.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//Activate FancyBox
+			$("p#test1 a").fancybox({
+				'hideOnContentClick': true
+			});
+			
+			$("p#test2 a").fancybox({
+				'zoomSpeedIn':	0, 
+				'zoomSpeedOut':	0, 
+				'overlayShow':	true
+			});
+			
+			$("a#custom_1").fancybox({
+				'itemLoadCallback': getGroupItems
+			});
+			
+			$("a#custom_2, a#custom_3").fancybox({
+				'zoomSpeedIn':	0, 
+				'zoomSpeedOut':	0
+			});
+			
+			//Some lines for this page
+			$("div#donate").bind("click", function() {
+				$("#donate_form").submit()
+			});
+			
+			$("#comment_form").attr("action", "/fancy/add_comment"); $("#age").val('fancy'); //die spamers, die...
+		});
+
+		//List can contain mixed media too
+		//Parameter "o" ir optional and used to override settings, example: {url: "http://www.google.com", title: false,  o: {'frameWidth': 200} }
+		var imageList = [
+			{url: "images/6_b.jpg", title: "First image"},
+			{url: "images/7_b.jpg", title: "Second image"},
+			{url: "images/8_b.jpg", title: "Third image"}
+		];
+		
+		function getGroupItems(opts) {
+			jQuery.each(imageList, function(i, val) {
+		        opts.itemArray.push(val);
+		    });
+		}
+		
+	</script>
+</head>
+<body>
+
+
+				<h1>Examples</h1>
+				<p id="test1">
+					<b>Fancy single images</b>
+					
+					<br />
+					
+					<a href="images/1_b.jpg"><img alt="" src="images/1_s.jpg" /></a>
+
+					<a title="Very fancy caption to this image" href="images/2_b.jpg"><img alt="" src="images/2_s.jpg" /></a>
+					
+					<a title="This is the ART" href="images/13_b.jpg"><img alt="" src="images/13_s.jpg" /></a>
+				</p>
+				<p>
+				<select>
+					<option>Pellentesque eleifend</option>
+					<option>Pellentesque mi sapien</option>
+				</select>
+			</p>
+				<p id="test2">
+					<b>Grouped images (no zooming animation, adds overlay)</b>
+					
+					<br />
+					
+					<a rel="group1" href="images/4_b.jpg"><img alt="" src="images/4_s.jpg" /></a>
+
+					<a rel="group1" title="Very fancy caption to this image" href="images/5_b.jpg"><img alt="" src="images/5_s.jpg" /></a>
+					
+					<a rel="group1" title="Life" href="images/10_b.jpg"><img alt="" src="images/10_s.jpg" /></a>
+				</p>
+				
+									
+								<div style="display:none" id="testube">
+					<object width="425" height="355"><param name="movie" value="http://www.youtube.com/v/-_jhdZoPW1Q&hl=en"></param><param name="wmode" value="transparent"></param><embed src="http://www.youtube.com/v/-_jhdZoPW1Q&hl=en" type="application/x-shockwave-flash" wmode="transparent" width="425" height="355"></embed></object>
+				</div>
+				
+	
+</body>
+</html>

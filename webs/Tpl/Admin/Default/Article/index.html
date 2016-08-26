@@ -1,0 +1,67 @@
+<extend name="Public:base" />
+<block name="appendHeader">
+
+</block>
+<block name="appendContent">
+    <div class="row">
+        <div class="col-md-12 p15 p25">
+            <div class="page-header clearfix">
+                <h3 class="pull-left nomargin"><i class='fa fa-file-text-o'></i>{$Think.session.curMenu.name}</h3>
+            </div>
+            <!-- search begin 如果需要特殊处理，粘贴过来就行 -->
+            <div class="clearfix">
+                <form class="form-horizontal" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/index')}" method="POST">
+                    <div class="form-group">
+                        <div class="col-xs-6 col-sm-6 col-md-4">
+                            <input class="pull-left form-control" name="keys" id="keys" value="{$Think.request.keys}" placeholder="请输入关键字">
+                            <input class="hidden" name="channel_id" id="channel_id"  type="text" value="{$channel_id}">
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 nopadding">
+                            <button type="submit" class="pull-left btn btn-primary">搜索</button>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-3 col-md-offset-3 text-right">
+                            <a href="{:U(GROUP_NAME.'/'.MODULE_NAME.'/page' ,array('channel_id' => $channel_id))}"><button type="button" class="btn btn-success">添加文章</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- search end -->
+            <div class="panel panel-default">
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-advanced tablesorter tb-sticky-header">
+                        <thead>
+                        <tr>
+                            <th class="hidden-xs" width="40">#</th>
+                            <th>文章标题</th>
+                            <th class="hidden-xs" width="100">浏览数</th>
+                            <th class="hidden-xs" width="100">发布时间</th>
+                            <th width="150">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo" key="key">
+                            <tr>
+                                <td class="hidden-xs">{$key}</td>
+                                <td>
+                                    <a href="{:U('Index/Index/article', array('id' => $vo['id'], 'channel_id' =>  $vo['channel_id']))}" target="_blank">{$vo['name']}</a>
+                                </td>
+                                <td class="hidden-xs">{$vo['view_num']}</td>
+                                <td>{$vo['update_date']}</td>
+                                <td>
+                                    <a href="{:U(GROUP_NAME.'/'.MODULE_NAME.'/page' ,array('channel_id' => $channel_id ,'article_id' => $vo['id']))}"><button type="button" class="btn btn-success">修改</button></a>
+                                    <button class="btn btn-danger {:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}DelBtn" data-info="您确定要删除嘛?" data-objurl="{:U(GROUP_NAME.'/'.MODULE_NAME.'/del', array('id' => $vo['id']))}">删除</button>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {$show}
+        </div>
+    </div>
+</block>
+<block name="appendFooter">
+
+</block>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title><block name="title">{$Think.config.WEB_TITLE}</block></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <!-- 引入css或js文件 -->
+    <include file="Public:importHeader" />
+    <script>
+        var CurrentPage = "{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}";
+    </script>
+    <!-- ------------------being block------------------- -->
+    <block name="appendHeader"></block>
+    <!-- ------------------ end block ------------------- -->
+</head>
+<body ondrag="return false" ondragstart="return false;">
+<!-- ConfirmModal begin -->
+<div class="modal fade" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}ConfirmModal" tabindex="-1" role="dialog" aria-labelledby="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}ConfirmModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnClose{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></button>
+                <h4 class="modal-title" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}ConfirmModalLabel">提示</h4>
+            </div>
+            <div class="modal-body text-center fontsize20">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnCancel{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}">取消</button>
+                <button type="button" class="btn btn-success" id="btnConfirm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ConfirmModal end -->
+
+<!-- FromModal begin -->
+<div class="modal fade" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal" tabindex="-1" role="dialog" aria-labelledby="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnCloseHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}"><span aria-hidden="true"><i class="fa fa-times-circle"></i></span></button>
+                <h4 class="modal-title" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModalLabel">弹出框</h4>
+            </div>
+            <div class="modal-body">
+                <!-- ------------------being block------------------- -->
+                <block name="appendHandleFrom"></block>
+                <!-- ------------------ end block ------------------- -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FromModal end -->
+
+<div class="container-fluid clearfix hdc_header">
+    <div class="container nopadding center-block clearfix">
+        <div class="pull-left">
+            <a href="{:U(MODULE_NAME.'/index')}" class="logo"></a>
+        </div>
+        <div class="pull-right">
+            <a href="{:U('User/index')}"><i class="fa fa-user"></i>欢迎您<span class="hidden-xs hidden-sm">，{$Think.session.userRealName}</span></a>
+            <a href="{:U('Index/Index/index')}"><i class="fa fa-home"></i>回到首页</a>
+            <a href="{:U('Public/logout')}"><i class="fa fa-power-off"></i>退出</a>
+        </div>
+    </div>
+</div>
+<div class="container bordercomm nopadding bgfff clearfix">
+    <!-- LeftNav-->
+    <div class="col-md-2 hidden-xs nopadding" id="leftNav">
+        <a class="thumbnail noborder nomargin mt25" href="{:U('User/index')}">
+            <img src="__PUBLIC__/common/image/{$Think.session.userImg}" class="img-thumbnail" style="width:70%" alt="{$Think.session.userRealName}">
+            <div class="caption text-center">
+                <p>欢迎您，{$Think.session.userRealName}</p>
+            </div>
+        </a>
+        <div class="list-group bordercommt nomargin menu">
+            <volist name="menu_list" id="menu_vo">
+                <if condition="authcheck($menu_vo['alink'], session('userId'))">
+                    <a href="{:U(MODULE_NAME.'/'.$menu_vo['alink'])}" class="list-group-item <eq name='menu_vo.is_cur' value='1'>active</eq>">
+                        <i class="fa fa-{$menu_vo['icon']}"></i> {$menu_vo['name']}
+                    </a>
+                </if>
+            </volist>
+        </div>
+        <div class="list-group bordercommt menu">
+            <volist name="channel_list" id="channel_vo">
+                <if condition="authcheck($channel_vo['check_link'], session('userId'))">
+                    <a href="{$channel_vo['alink']}" style="margin-left:10px;" class="list-group-item <eq name='channel_vo.is_cur' value='1'>active</eq>">
+                        <i class="fa fa-file-text-o"></i> {$channel_vo['name']}
+                    </a>
+                </if>
+            </volist>
+        </div>
+    </div>
+    <!-- RightContent -->
+    <div class="col-md-10 col-xs-12 nopadding bordercomml" id="rightContent" style="margin-left:-1px;min-height:600px;">
+        <div class="container-fluid">
+            <block name="appendContent"></block>
+        </div>
+    </div>
+</div>
+<div class="foot text-center">
+    <p>{$Think.config.WEB_COPYRIGHT}</p>
+</div>
+<include file="Public:importFooter" />
+<!-- ------------------being block------------------- -->
+<block name="appendFooter"></block>
+<!-- ------------------ end block ------------------- -->
+</body>
+</html>

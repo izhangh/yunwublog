@@ -1,0 +1,185 @@
+<extend name="Public:base" />
+<block name="appendHeader">
+</block>
+<block name="appendContent">
+    <div class="row">
+        <div class="col-md-12 p15 p25">
+            <div class="page-header clearfix">
+                <h3 class="pull-left nomargin"><i class='fa fa-{$Think.session.curMenu.icon}'></i>{$Think.session.curMenu.name}</h3>
+                <button type="button" class="pull-right btn btn-success" data-toggle="modal" data-target="#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal" data-action="add" data-backdrop="static" data-keyboard="false">添加分组</button>
+            </div>
+
+            <div class="panel panel-default">
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-advanced tablesorter tb-sticky-header">
+                        <thead>
+                            <tr>
+                                <th class="hidden-xs" width="40">#</th>
+                                <th>分组名称</th>
+                                <th width="150">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <volist name="list" id="vo" key="key">
+                                <tr>
+                                    <td class="hidden-xs">{$vo['sort']}</td>
+                                    <td>{$vo['title']}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal" data-obj="{$key}" data-whatever="@edit_{$vo['id']}" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                        <button class="btn btn-danger {:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}DelBtn" data-info="您确定要删除嘛?" data-objurl="{:U(GROUP_NAME.'/'.MODULE_NAME.'/del', array('id' => $vo['id']))}">删除</button>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {$show}
+        </div>
+    </div>
+</block>
+<block name="appendHandleFrom">
+    <form class="form-horizontal" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm" name="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/handle')}" method="post">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">序号:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="sort" name="sort" data-bv-field="sort" value="1" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">分组名称:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" name="title" data-bv-field="title" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">权限:</label>
+            <div class="col-sm-10">
+                <volist name="rule_list" id="rule_vo" key="rule_key" mod="3">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="rules_arr{$rule_key}" name="rules_arr" value="{$rule_vo['id']}" /> {$rule_vo['title']}({$rule_vo['name']})
+                    </label>
+                    <br/>
+                </volist>
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <div class="col-sm-12">
+                <input type='hidden' name='id' id='id' value='' />
+                <input type='hidden' name='rules' id='rules' value='' />
+                <input type='hidden' name='_method_' id='_method_' value='add' />
+                <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}">取消</button>
+            </div>
+        </div>
+    </form>
+</block>
+<block name="appendFooter">
+    <script>
+        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var action = button.data('action');
+            var modal = $(this);
+            if(action == 'add') {
+                modal.find('.modal-title').html("<i class='fa fa-plus-circle'></i>添加信息");
+                $('#_method_').val(action);
+            } else if(action == 'edit') {
+                modal.find('.modal-title').html("<i class='fa fa-edit'></i>修改信息");
+                var dataList = {:json_encode($list)};
+                var obj = parseInt(button.data('obj')) - 1;
+                $('#title').val(dataList[obj].title);
+                var rules_str = dataList[obj].rules;
+                $("input:checkbox[name='rules_arr']").each(function () {
+                    if(rules_str.indexOf(this.value) == -1) {
+                        $(this).removeProp('checked');
+                    } else {
+                        $(this).prop('checked', 'checked');
+                    }
+                })
+                $('#sort').val(dataList[obj].sort);
+                $('#id').val(dataList[obj].id);
+                $('#_method_').val(action);
+
+            }
+        })
+
+        $(document).ready(function() {
+            $('#btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}').bind('click', function() {
+                $('#rules').val();
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+            })
+            $('#btnCloseHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}').bind('click', function() {
+                $('#rules').val();
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+            })
+            $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator({
+                message: '您输入的信息有误，请仔细检查！',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    sort: {
+                        validators: {
+                            notEmpty: {
+                                message: '序号必须'
+                            },
+                            integer: {
+                                message: '必须为数字'
+                            }
+                        }
+                    },
+                    title: {
+                        validators: {
+                            notEmpty: {
+                                message: '分组名称必须'
+                            }
+                        }
+                    },
+                    rules_arr: {
+                        validators: {
+                            choice: {
+                                min: 1,
+                                message: '至少选择一个权限'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function(e) {
+                e.preventDefault();
+                var $form = $(e.target);    //获取表单实例
+                var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+                //对modal处理
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').find('button').attr('disabled', true);     // 禁用所有删除按钮
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').modal('hide');   //隐藏HandleFormModal
+                confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
+                //ajax处理
+                var rules_arr = new Array();
+                $("input:checkbox[name='rules_arr']:checked").each(function () {
+                    rules_arr.push(this.value);
+                })
+                $('#rules').val(rules_arr.join(','));
+                ajaxDo($form.attr('action'), $form.serialize(), "POST");
+                if(ajaxReturnData.status == '200') {
+                    confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+                    setTimeout(function() {
+                        window.location.replace(window.location.href);
+                    }, 1000);
+                } else if(ajaxReturnData.status == '300') {
+                    confirmModalInfo(ajaxReturnData.info, '');
+                    setTimeout(function() {
+                        confirmModalClose();
+                        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
+                        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });   //显示HandleFormModal，保持原样
+                    }, 1000);
+                }
+            });;
+        });
+    </script>
+</block>

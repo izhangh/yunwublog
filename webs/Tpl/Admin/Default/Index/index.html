@@ -1,0 +1,65 @@
+<extend name="Public:base" />
+<block name="appendHeader">
+</block>
+<block name="appendContent">
+    <div class="container-fluid">
+        <div class="row block-index">
+            <volist name="block" id="block_vo">
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                    <a href="{$block_vo['url']}" class="block-a {$block_vo['class']} text-center">
+                        <div class="block-icon">
+                            <i class="fa fa-{$block_vo['icon']}"></i>{$block_vo['num']}
+                        </div>
+                        <h3>{$block_vo['name']}</h3>
+                    </a>
+                </div>
+            </volist>
+        </div>
+    </div>
+    <div class="container-fluid" style="padding-left:5px;padding-right:5px;">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="panel-group mt25" id="checkComboListAccordion" role="tablist" aria-multiselectable="true">
+                    <volist name="checkComboList" id="checkCombo_vo">
+                        <div class="panel clearfix <eq name='checkCombo_vo.gender' value='a'>panel-info</eq> <eq name='checkCombo_vo.gender' value='b'>panel-warning</eq> <eq name='checkCombo_vo.gender' value='c'>panel-success</eq>">
+                            <div class="panel-heading" role="tab" id="head_{$checkCombo_vo['id']}">
+                                <h3 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#checkComboListAccordion" href="#collapse_{$checkCombo_vo['id']}" aria-expanded="true" aria-controls="collapse_{$checkCombo_vo['id']}">
+                                        {$checkCombo_vo['name']}<span class="label label-success pull-right"><i class="fa fa-jpy"></i>{$checkCombo_vo['price']}</span>
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapse_{$checkCombo_vo['id']}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="head_{$checkCombo_vo['id']}">
+                                <notempty name="checkCombo_vo.introduce">
+                                <div class="panel-body">
+                                    <p>套餐简介：{$checkCombo_vo.introduce}</p>
+                                </div>
+                                </notempty>
+                                <table class="table table-hover table-bordered table-advanced">
+                                    <thead>
+                                        <tr>
+                                            <th>项目名称</th>
+                                            <th>项目单价</th>
+                                            <th>项目介绍</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <volist name="checkCombo_vo['itemList']" id="item_vo">
+                                            <tr>
+                                                <td>{$item_vo['name']}</td>
+                                                <td><i class="fa fa-jpy"></i>{$item_vo['price']}</td>
+                                                <td>{$item_vo['introduce']}</td>
+                                            </tr>
+                                        </volist>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </volist>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="appendFooter">
+</block>

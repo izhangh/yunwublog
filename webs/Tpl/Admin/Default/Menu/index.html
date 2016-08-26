@@ -1,0 +1,212 @@
+<extend name="Public:base" />
+<block name="appendHeader">
+
+</block>
+<block name="appendContent">
+    <div class="row">
+        <div class="col-md-12 p15 p25">
+            <div class="page-header clearfix">
+                <h3 class="pull-left nomargin"><i class='fa fa-{$Think.session.curMenu.icon}'></i>{$Think.session.curMenu.name}</h3>
+                <button type="button" class="pull-right btn btn-success" data-toggle="modal" data-target="#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal" data-action="add" data-backdrop="static" data-keyboard="false">添加菜单</button>
+            </div>
+            <div class="panel panel-default">
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-advanced tablesorter tb-sticky-header">
+                        <thead>
+                            <tr>
+                                <th class="hidden-xs" width="40">#</th>
+                                <th>菜单名称</th>
+                                <th class="hidden-xs">链接网址</th>
+                                <th width="150">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <volist name="list" id="vo" key="key">
+                                <tr>
+                                    <td class="hidden-xs">{$vo['sort']}</td>
+                                    <td>
+                                        <switch name="vo.level">
+                                            <case value="0">+</case>
+                                            <case value="1">+--</case>
+                                            <case value="2">+------</case>
+                                            <default />
+                                        </switch>
+                                        {$vo['name']}
+                                    </td>
+                                    <td class="hidden-xs">{$vo['alink']}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal" data-obj="{$key}" data-whatever="@edit_{$vo['id']}" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                        <neq name="vo['is_parent']" value="1">
+                                            <button class="btn btn-danger {:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}DelBtn" data-info="您确定要删除嘛?" data-objurl="{:U(GROUP_NAME.'/'.MODULE_NAME.'/del', array('id' => $vo['id']))}">删除</button>
+                                        </neq>
+                                    </td>
+                                </tr>
+                            </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="appendHandleFrom">
+    <form class="form-horizontal" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm" name="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/handle')}" method="post">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">上级菜单:</label>
+            <div class="col-sm-10">
+                <select name="pid" id="pic" data-bv-field="pic" class="form-control selectpicker" data-live-search="true">
+                    <option value="0">顶级菜单</option>
+                    <foreach name="list" item="v">
+                        <option value="{$v.id}">
+                            <switch name="v.level">
+                                <case value="0">+</case>
+                                <case value="1">+--</case>
+                                <case value="2">+------</case>
+                                <default />
+                            </switch>
+                            {$v.name}
+                        </option>
+                    </foreach>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">菜单名称:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" name="name" data-bv-field="name" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">菜单地址:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="alink" name="alink" data-bv-field="alink" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">菜单图标:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="icon" name="icon" data-bv-field="icon" value="gear" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">排序:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="sort" name="sort" data-bv-field="sort" value="" />
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <div class="col-sm-12">
+                <input type='hidden' name='id' id='id' value='' />
+                <input type='hidden' name='_method_' id='_method_' value='add' />
+                <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}">取消</button>
+            </div>
+        </div>
+    </form>
+</block>
+<block name="appendFooter">
+    <script>
+        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var action = button.data('action');
+            var modal = $(this);
+            if(action == 'add') {
+                modal.find('.modal-title').html("<i class='fa fa-plus-circle'></i>添加信息");
+                $('#_method_').val(action);
+            } else if(action == 'edit') {
+                modal.find('.modal-title').html("<i class='fa fa-edit'></i>修改信息");
+                var menuList = {:json_encode($list)};
+                var obj = parseInt(button.data('obj')) - 1;
+                $('.selectpicker').selectpicker('val', menuList[obj].pid);
+                $('#name').val(menuList[obj].name);
+                $('#alink').val(menuList[obj].alink);
+                $('#sort').val(menuList[obj].sort);
+                $('#icon').val(menuList[obj].icon);
+                $('#id').val(menuList[obj].id);
+                $('#_method_').val(action);
+            }
+        })
+
+        $(document).ready(function() {
+            $('#btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}').bind('click', function() {
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+            })
+            $('#btnCloseHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}').bind('click', function() {
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+            })
+            $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator({
+                message: '您输入的信息有误，请仔细检查！',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    pid: {
+                        validators: {
+                            notEmpty: {
+                                message: '上级菜单必须'
+                            }
+                        }
+                    },
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: '菜单名称必须'
+                            }
+                        }
+                    },
+                    alink: {
+                        validators: {
+                            notEmpty: {
+                                message: '菜单地址必须'
+                            }
+                        }
+                    },
+                    icon: {
+                        validators: {
+                            notEmpty: {
+                                message: '图标不能为空'
+                            }
+                        }
+                    },
+                    sort: {
+                        validators: {
+                            integer: {
+                                message: '请输入数字'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function(e) {
+                e.preventDefault();
+                var $form = $(e.target);    //获取表单实例
+                var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+                //对modal处理
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').find('button').attr('disabled', true);     // 禁用所有删除按钮
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').modal('hide');   //隐藏HandleFormModal
+                confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
+                //ajax处理
+                ajaxDo($form.attr('action'), $form.serialize(), "POST");
+                if(ajaxReturnData.status == '200') {
+                    confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+                    setTimeout(function() {
+                        window.location.replace(window.location.href);
+                    }, 1000);
+                } else if(ajaxReturnData.status == '300') {
+                    confirmModalInfo(ajaxReturnData.info, '');
+                    setTimeout(function() {
+                        confirmModalClose();
+                        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
+                        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });   //显示HandleFormModal，保持原样
+                    }, 1000);
+                }
+            });;
+        });
+    </script>
+</block>
