@@ -1,2 +1,5 @@
-/.idea
-/webs/Runtime
+# 此文件定义git版本管理过程中忽略内容
+ 
+/webs/Runtime/  # 忽略Runtime文件夹
+*.log
+/.idea/
