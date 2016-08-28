@@ -1,62 +1,49 @@
 <?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="renderer" content="webkit">
-<link rel="icon" href="__ROOT__/favicon.ico" type="image/x-icon" />
-<title><?php echo (C("WEB_NAME")); ?></title>
-<meta name="Keywords" content="<?php echo (C("WEB_KEYWORD")); ?>" >
-<meta name="Description" content="<?php echo (C("WEB_DESCRIBE")); ?>" >
-<script src="__PUBLIC__/common/lib/html5shiv.min.js"></script>
-<script src="__PUBLIC__/common/lib/respond.min.js"></script>
-<!-- 新 Bootstrap 核心 CSS 文件 -->
-<link rel="stylesheet" href="__PUBLIC__/common/lib/bootstrap/bootstrap/css/bootstrap.min.css">
-<!-- font-awesome字体 -->
-<link rel="stylesheet" href="__PUBLIC__/common/lib/font-awesome/css/font-awesome.min.css">
-<!-- 自定义样式 -->
-<link rel="stylesheet" href="__PUBLIC__/common/css/common.css">
-    <title><?php echo ($articleData['name']); ?>—<?php echo ($channelData['name']); ?>—<?php echo (C("WEB_NAME")); ?></title>
-    <link rel="stylesheet" href="__PUBLIC__/common/css/article.css">
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="__PUBLIC__/common/css/article.css" />
     <link rel="stylesheet" href="__PUBLIC__/editor.md-master/css/editormd.preview.css" />
 </head>
-<body ondrag="return false" ondragstart="return false;" style="background: #ebebeb;">
-<?php if(!empty($articleData['pic'])): ?><!--放大图的imgModal-->
-    <div class="modal fade bs-example-modal-lg text-center" id="imgModal"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" >
-        <div class="modal-dialog modal-lg" style="display: inline-block; width: auto;max-width:100%;">
-            <div class="modal-content">
-                <img id="imgInModalID" src="__ROOT__<?php echo ($articleData['pic']); ?>" style="display: inline-block; width: auto;max-width:100%;" >
-            </div>
-        </div>
-    </div><?php endif; ?>
-<!--content begin-->
-<div class="container mt20">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 bgfff">
-            <?php echo ($articleData['content']); ?>
-        </div>
+<body>
+<div id="layout">
+    <div id="sidebar">
+        <h1>本文目录</h1>
+        <div class="markdown-body editormd-preview-container" id="custom-toc-container">#custom-toc-container</div>
+    </div>
+    <div id="editormd-view">
+        <textarea id="append-test" style="display:none;"><?php echo ($articleData['markdown']); ?></textarea>
     </div>
 </div>
-<!-- footer begin -->
-<div class="container-fluid hdb_footer text-center bggrey">
-    <?php echo (C("WEB_COPYRIGHT")); ?>
-</div>
-<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script src="__PUBLIC__/common/lib/jquery/jquery.min.js"></script>
-<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="__PUBLIC__/common/lib/bootstrap/bootstrap/js/bootstrap.min.js"></script>
-<!-- footer end -->
-<script>
+<script src="__PUBLIC__/editor.md-master/lib/marked.min.js"></script>
+<script src="__PUBLIC__/editor.md-master/lib/prettify.min.js"></script>
+<script src="__PUBLIC__/editor.md-master/lib/raphael.min.js"></script>
+<script src="__PUBLIC__/editor.md-master/lib/underscore.min.js"></script>
+<script src="__PUBLIC__/editor.md-master/lib/sequence-diagram.min.js"></script>
+<script src="__PUBLIC__/editor.md-master/lib/flowchart.min.js"></script>
+<script src="__PUBLIC__/editor.md-master/lib/jquery.flowchart.min.js"></script>
+<script src="__PUBLIC__/editor.md-master/editormd.js"></script>
+<script type="text/javascript">
     $(function() {
-        $('img').click(function(even) {
-            even.preventDefault();
-            $('#imgInModalID').prop('src', $(this).attr('src'));
-            $('#imgModal').modal({
-                show: true
-            })
-        })
-    })
+        editormd.markdownToHTML("editormd-view", {
+                markdown        : $("#append-test").text(),
+                //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                //toc             : false,
+                tocm            : true,    // Using [TOCM]
+                tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+                //gfm             : false,
+                //tocDropdown     : true,
+                // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+                emoji           : true,
+                taskList        : true,
+                tex             : true,  // 默认不解析
+                flowChart       : true,  // 默认不解析
+                sequenceDiagram : true,  // 默认不解析
+            });
+    });
 </script>
 </body>
 </html>

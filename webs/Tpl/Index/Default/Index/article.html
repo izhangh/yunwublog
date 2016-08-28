@@ -1,46 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-    <include file="Public:header" />
+    <meta charset="utf-8" />
     <title>{$articleData['name']}—{$channelData['name']}—{$Think.config.WEB_NAME}</title>
+    <link rel="stylesheet" href="__PUBLIC__/common/css/article.css" />
     <link rel="stylesheet" href="__PUBLIC__/editor.md-master/css/editormd.preview.css" />
-    <style>
-        #layout > header, .btns {
-            width: auto;
-        }
-        #sidebar {
-            width: 400px;
-            height: 100%;
-            position: fixed;
-            top: 0;
-            right: 0;
-            background: #fff;
-            z-index: 100;
-            padding: 18px;
-            border: 1px solid #ddd;
-            border-top: none;
-            border-bottom: none;
-        }
-        #sidebar h1 {
-            font-size: 20px;
-        }
-        #custom-toc-container {
-            padding-left: 0;
-        }
-        #editormd-view{
-            padding-left: 40px;
-            padding-right: 430px;
-            margin: 0;
-        }
-    </style>
 </head>
-<body ondrag="return false" ondragstart="return false;" style="background: #ebebeb;">
-<div id="sidebar">
-    <h1>本文目录</h1>
-    <div class="markdown-body editormd-preview-container" id="custom-toc-container">#custom-toc-container</div>
-</div>
-<div id="editormd-view">
-    <textarea style="display:none;" id="append-test" name="editormd-markdown-doc">{$articleData['content']}</textarea>
+<body>
+<div id="layout">
+    <div id="sidebar">
+        <h1>本文目录</h1>
+        <div class="markdown-body editormd-preview-container" id="custom-toc-container">#custom-toc-container</div>
+    </div>
+    <div id="editormd-view">
+        <textarea id="append-test" style="display:none;">{$articleData['markdown']}</textarea>
+    </div>
 </div>
 <script src="__PUBLIC__/common/lib/jquery/jquery.min.js"></script>
 <script src="__PUBLIC__/editor.md-master/lib/marked.min.js"></script>
@@ -50,21 +24,25 @@
 <script src="__PUBLIC__/editor.md-master/lib/sequence-diagram.min.js"></script>
 <script src="__PUBLIC__/editor.md-master/lib/flowchart.min.js"></script>
 <script src="__PUBLIC__/editor.md-master/lib/jquery.flowchart.min.js"></script>
-<script src="__PUBLIC__/editor.md-master/editormd.min.js"></script>
+<script src="__PUBLIC__/editor.md-master/editormd.js"></script>
 <script type="text/javascript">
     $(function() {
         editormd.markdownToHTML("editormd-view", {
-            markdown        : $("#append-test").text(),
-            htmlDecode      : "style,script,iframe",  // you can filter tags decode
-            tocm            : true,    // Using [TOCM]
-            tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
-            markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
-            emoji           : true,
-            taskList        : true,
-            tex             : true,  // 默认不解析
-            flowChart       : true,  // 默认不解析
-            sequenceDiagram : true,  // 默认不解析
-        });
+                markdown        : $("#append-test").text(),
+                //htmlDecode      : true,       // 开启 HTML 标签解析，为了安全性，默认不开启
+                htmlDecode      : "style,script,iframe",  // you can filter tags decode
+                //toc             : false,
+                tocm            : true,    // Using [TOCM]
+                tocContainer    : "#custom-toc-container", // 自定义 ToC 容器层
+                //gfm             : false,
+                //tocDropdown     : true,
+                // markdownSourceCode : true, // 是否保留 Markdown 源码，即是否删除保存源码的 Textarea 标签
+                emoji           : true,
+                taskList        : true,
+                tex             : true,  // 默认不解析
+                flowChart       : true,  // 默认不解析
+                sequenceDiagram : true,  // 默认不解析
+            });
     });
 </script>
 </body>

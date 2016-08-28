@@ -127,7 +127,7 @@
                             <label class="col-sm-2 control-label">所属分类:</label>
                             <div class="col-sm-9">
                                 <select name="classify_id" id="classify_id" class="form-control selectpicker" data-live-search="true">
-                                    <?php if(is_array($classify_list)): foreach($classify_list as $key=>$v): ?><option value="<?php echo ($v["id"]); ?>" <?php if(($v["id"]) == $currdata['classify_id']): endif; ?>><?php echo ($v["name"]); ?></option><?php endforeach; endif; ?>
+                                    <?php if(is_array($classify_list)): foreach($classify_list as $key=>$v): ?><option value="<?php echo ($v["id"]); ?>" <?php if(($v["id"]) == $currdata['classify_id']): ?>selected<?php endif; ?>><?php echo ($v["name"]); ?></option><?php endforeach; endif; ?>
                                 </select>
                             </div>
                         </div>
