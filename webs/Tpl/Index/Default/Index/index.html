@@ -6,91 +6,30 @@
     <link rel="stylesheet" href="__PUBLIC__/common/lib/bootstrap/validate/bootstrapValidator.min.css">
 </head>
 <body ondrag="return false" ondragstart="return false;">
-<!-- top begin -->
-<include file="Public:top" />
-<!-- top end -->
-<div class="container mt30 pb20">
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-8">
-            <h4 class="content-header"><a href="{:U(GROUP_NAME.'/'.MODULE_NAME.'/listArticle', array('id' =>  $dongtaiChannel['id']))}">{$dongtaiChannel['name']}</a></h4>
-            <div class="mt20 width95 center-block">
-                <volist name="dongtailist" id="dongtai_vo">
-                    <div class="media">
-                        <div class="media-left media-middle">
-                            <a href="{:U(GROUP_NAME.'/'.MODULE_NAME.'/article', array('id' => $dongtai_vo['id'], 'channel_id' =>  $dongtai_vo['channel_id']))}">
-                                <div class="media-object con_news_list_date">
-                                    <span class="day">{$dongtai_vo['D']}</span>
-                                    <span class="year">{$dongtai_vo['YM']}</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <a href="{:U(GROUP_NAME.'/'.MODULE_NAME.'/article', array('id' => $dongtai_vo['id'], 'channel_id' =>  $dongtai_vo['channel_id']))}">
-                                <div class="con_news_list_title">{$dongtai_vo['name']}</div>
-                                <div class="con_news_list_des">{$dongtai_vo['description']}</div>
-                            </a>
-                        </div>
-                    </div>
-                </volist>
-            </div>
+<form id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}LoginForm" name="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}LoginForm" action="{:U('Index/Index/signin')}" method="post">
+    <driv class="form-group">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            <input type="text" class="form-control" data-bv-field="username" id="username" name="username" placeholder="请输入用户名">
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4">
-            <empty name="Think.session.userId">
-                <div class="mt10 panel panel-info" style="margin-bottom:10px;border-radius: 0;">
-                    <div class="panel-heading" style="border-radius: 0;">
-                        <h4 class="panel-title" style="font-size: 21px;">用户登录 <small class="colorf00 ml10" id="loginTip" style="display: none;">提示信息</small></h4>
-                    </div>
-                    <div class="panel-body">
-                        <form id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}LoginForm" name="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}LoginForm" action="{:U('Index/Index/signin')}" method="post">
-                            <driv class="form-group">
-                                <div class="input-group input-group-lg">
-                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" data-bv-field="username" id="username" name="username" placeholder="请输入用户名">
-                                </div>
-                            </driv>
-                            <div class="form-group">
-                                <div class="input-group input-group-lg">
-                                    <span class="input-group-addon"><i class="fa fa-lock" style="font-size: 19px;"></i></span>
-                                    <input type="password" class="form-control" data-bv-field="password" id="password" name="password" placeholder="请输入密码">
-                                </div>
-                            </div>
-                            <div class="form-group text-right mt20 mb5">
-                                <button type="submit" id="submitLogin" class="btn btn-info width40 ml10">登录</button>
-                                <button type="reset" class="btn btn-default width40">重置</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <else />
-                <div class="mt10 panel panel-info" style="margin-bottom:10px;border-radius: 0;">
-                    <div class="panel-heading" style="border-radius: 0;">
-                        <h4 class="panel-title" style="font-size: 21px;">登录成功</h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="thumbnail noborder nomargin">
-                            <img src="__PUBLIC__/common/image/{$Think.session.userImg}" alt="{$Think.session.userRealName}" class="img-thumbnail img-circle" width="125">
-                            <div class="caption text-center">
-                                <h3 class="mt5">欢迎您，{$Think.session.userRealName}</h3>
-                                <hr class="mt15 mb15">
-                                <p class="text-right">
-                                    <a href="{:U('Admin/Index/index')}" class="btn btn-info" role="button">进入后台</a>
-                                    <a href="{:U('Index/Index/signup')}" class="btn btn-default ml10" role="button">退出</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </empty>
+    </driv>
+    <div class="form-group">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon"><i class="fa fa-lock" style="font-size: 19px;"></i></span>
+            <input type="password" class="form-control" data-bv-field="password" id="password" name="password" placeholder="请输入密码">
         </div>
     </div>
-</div>
+    <div class="form-group text-right mt20 mb5">
+        <button type="submit" id="submitLogin" class="btn btn-info width40 ml10">登录</button>
+        <button type="reset" class="btn btn-default width40">重置</button>
+    </div>
+</form>
 <!-- footer begin -->
 <include file="Public:footer" />
 <!-- footer end -->
 <!--表单验证-->
 <script src="__PUBLIC__/common/lib/bootstrap/validate/bootstrapValidator.min.js"></script>
 <script src="__PUBLIC__/common/lib/bootstrap/validate/zh_CN.js"></script>
-<script src="__PUBLIC__/common/lib/jquery/superslide/jquery.SuperSlide.2.1.2.js"></script>
 <script>
     $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}LoginForm').bootstrapValidator({
         message: '您输入的信息有误，请仔细检查！',

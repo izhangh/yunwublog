@@ -57,17 +57,12 @@ Class ArticleAction extends CommonAction
         if(!empty(I('get.article_id'))) {
             $currdata = $this->_find(M($this->dbname), array('id' => I('get.article_id')));
             $currdata['content'] = html_out($currdata['content']);
-            $currdata['markdown'] = json_encode(html_out($currdata['markdown']));
             $method = 'edit';
             if(!empty($currdata['pic'])) {
                 $pic_display = '';
             }
             $this->assign('currdata', $currdata);
             $this->assign('article_id', I('get.article_id'));
-        }
-        if(!isset($currdata)) {
-            $currdata['markdown'] = json_encode(file_get_contents('./Public/editor.md-master/base.md'));
-            $this->assign('currdata', $currdata);
         }
         $this->classify_list = M('Classify')->field(array('id', 'name'))->where(array('channel_id' => I('channel_id')))->select();
         $this->assign('method', $method);

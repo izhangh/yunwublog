@@ -4031,7 +4031,7 @@
         var markdownParsed = marked(markdownDoc, markedOptions);
         
         markdownParsed = editormd.filterHTMLTags(markdownParsed, settings.htmlDecode);
-        
+
         if (settings.markdownSourceCode) {
             saveTo.text(markdownDoc);
         } else {
