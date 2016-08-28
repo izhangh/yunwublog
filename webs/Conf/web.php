@@ -1,1 +1,1 @@
-<?php	return array ( 'WEB_NAME' => '云雾海玲博客', 'WEB_KEYWORD' => '云雾海玲博客，IT，PHP，HTML，CSS，JAVASCRIPT，JAVA，PYTHON，RUBY', 'WEB_DESCRIBE' => '云雾海玲博客', 'WEB_BANNER' => '5', 'WEB_COPYRIGHT' => '版权所有©云雾1741 邮编：730070 地址：兰州市安宁东路967号 技术支持：云雾1741', 'ADMINISTRATOR' => '1', );?>
+<?php	return array ( 'WEB_NAME' => '云雾海玲博客', 'WEB_KEYWORD' => '云雾海玲博客，IT，PHP，HTML，CSS，JAVASCRIPT，JAVA，PYTHON，RUBY', 'WEB_DESCRIBE' => '云雾海玲博客', 'WEB_BANNER' => '5', 'WEB_COPYRIGHT' => '版权所有©云雾海玲 邮编：730070 地址：兰州市安宁东路967号 技术支持：云雾海玲', 'ADMINISTRATOR' => '1', );?>

@@ -83,7 +83,7 @@
             <a href="<?php echo U(MODULE_NAME.'/index');?>" class="logo"></a>
         </div>
         <div class="pull-right">
-            <a href="<?php echo U('User/index');?>"><i class="fa fa-user"></i>欢迎您<span class="hidden-xs hidden-sm">，<?php echo (session('userRealName')); ?></span></a>
+            <a class="hidden-xs" href="<?php echo U('User/index');?>"><i class="fa fa-user"></i>欢迎您<span class="hidden-xs hidden-sm">，<?php echo (session('userRealName')); ?></span></a>
             <a class="<?php echo GROUP_NAME; echo MODULE_NAME; echo ACTION_NAME;?>DelBtn" data-info="您确定要清除缓存嘛?" data-objurl="<?php echo U(GROUP_NAME.'/Index/delRuntime');?>"><i class="fa fa-times-circle"></i>清除缓存</a>
             <a class="hidden-xs" href="<?php echo U('Public/logout');?>"><i class="fa fa-power-off"></i>退出</a>
             <a class="visible-xs-inline" href="javascript:" id="toggleLeftNav"><i class="fa fa-list"></i>功能菜单</a>
