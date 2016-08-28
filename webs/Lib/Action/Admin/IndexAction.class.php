@@ -40,4 +40,9 @@ class IndexAction extends CommonAction {
         $this->assign('block', $block);
         $this->display();
     }
+    function delRuntime() {
+        import("ORG.Io.Dir");
+        Dir::delDir(RUNTIME_PATH, true);
+        $this->mtReturn('200', '清除成功');
+    }
 }

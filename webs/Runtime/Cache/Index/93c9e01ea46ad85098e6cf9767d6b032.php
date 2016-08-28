@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title><?php echo ($articleData['name']); ?>—<?php echo ($channelData['name']); ?>—<?php echo (C("WEB_NAME")); ?></title>
     <link rel="stylesheet" href="__PUBLIC__/common/css/article.css" />
     <link rel="stylesheet" href="__PUBLIC__/editor.md-master/css/editormd.preview.css" />
 </head>

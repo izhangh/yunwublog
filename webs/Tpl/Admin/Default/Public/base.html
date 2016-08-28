@@ -61,16 +61,18 @@
             <a href="{:U(MODULE_NAME.'/index')}" class="logo"></a>
         </div>
         <div class="pull-right">
-            <a href="{:U('User/index')}"><i class="fa fa-user"></i>欢迎您<span class="hidden-xs hidden-sm">，{$Think.session.userRealName}</span></a>
-            <a href="{:U('Index/Index/index')}"><i class="fa fa-home"></i>回到首页</a>
-            <a href="{:U('Public/logout')}"><i class="fa fa-power-off"></i>退出</a>
+            <a class="hidden-xs" href="{:U('User/index')}"><i class="fa fa-user"></i>欢迎您<span class="hidden-xs hidden-sm">，{$Think.session.userRealName}</span></a>
+            <a class="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}DelBtn" data-info="您确定要清除缓存嘛?" data-objurl="{:U(GROUP_NAME.'/Index/delRuntime')}"><i class="fa fa-times-circle"></i>清除缓存</a>
+            <a class="hidden-xs" href="{:U('Public/logout')}"><i class="fa fa-power-off"></i>退出</a>
+            <a class="visible-xs-inline" href="javascript:" id="toggleLeftNav"><i class="fa fa-list"></i>功能菜单</a>
         </div>
     </div>
 </div>
+
 <div class="container bordercomm nopadding bgfff clearfix">
     <!-- LeftNav-->
-    <div class="col-md-2 hidden-xs nopadding" id="leftNav">
-        <a class="thumbnail noborder nomargin mt25" href="{:U('User/index')}">
+    <div class="col-md-2 hidden-xs nopadding hidden-xs" id="leftNav">
+        <a class="hidden-xs thumbnail noborder nomargin mt25" href="{:U('User/index')}">
             <img src="__PUBLIC__/common/image/{$Think.session.userImg}" class="img-thumbnail" style="width:70%" alt="{$Think.session.userRealName}">
             <div class="caption text-center">
                 <p>欢迎您，{$Think.session.userRealName}</p>

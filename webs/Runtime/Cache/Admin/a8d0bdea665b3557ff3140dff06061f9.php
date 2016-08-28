@@ -85,15 +85,17 @@
         </div>
         <div class="pull-right">
             <a href="<?php echo U('User/index');?>"><i class="fa fa-user"></i>欢迎您<span class="hidden-xs hidden-sm">，<?php echo (session('userRealName')); ?></span></a>
-            <a href="<?php echo U('Index/Index/index');?>"><i class="fa fa-home"></i>回到首页</a>
-            <a href="<?php echo U('Public/logout');?>"><i class="fa fa-power-off"></i>退出</a>
+            <a class="<?php echo GROUP_NAME; echo MODULE_NAME; echo ACTION_NAME;?>DelBtn" data-info="您确定要清除缓存嘛?" data-objurl="<?php echo U(GROUP_NAME.'/Index/delRuntime');?>"><i class="fa fa-times-circle"></i>清除缓存</a>
+            <a class="hidden-xs" href="<?php echo U('Public/logout');?>"><i class="fa fa-power-off"></i>退出</a>
+            <a class="visible-xs-inline" href="javascript:" id="toggleLeftNav"><i class="fa fa-list"></i>功能菜单</a>
         </div>
     </div>
 </div>
+
 <div class="container bordercomm nopadding bgfff clearfix">
     <!-- LeftNav-->
-    <div class="col-md-2 hidden-xs nopadding" id="leftNav">
-        <a class="thumbnail noborder nomargin mt25" href="<?php echo U('User/index');?>">
+    <div class="col-md-2 hidden-xs nopadding hidden-xs" id="leftNav">
+        <a class="hidden-xs thumbnail noborder nomargin mt25" href="<?php echo U('User/index');?>">
             <img src="__PUBLIC__/common/image/<?php echo (session('userImg')); ?>" class="img-thumbnail" style="width:70%" alt="<?php echo (session('userRealName')); ?>">
             <div class="caption text-center">
                 <p>欢迎您，<?php echo (session('userRealName')); ?></p>
@@ -144,6 +146,7 @@
                         <thead>
                         <tr>
                             <th class="hidden-xs" width="40">#</th>
+                            <th>所属分类</th>
                             <th>文章标题</th>
                             <th class="hidden-xs" width="150">发布时间</th>
                             <th width="150">操作</th>
@@ -152,6 +155,7 @@
                         <tbody>
                         <?php if(is_array($list)): $key = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($key % 2 );++$key;?><tr>
                                 <td class="hidden-xs"><?php echo ($key); ?></td>
+                                <td class="hidden-xs"><?php echo ($vo['classify']); ?></td>
                                 <td>
                                     <a href="<?php echo U('Index/Index/article', array('id' => $vo['id'], 'channel_id' => $vo['channel_id']));?>" target="_blank"><?php echo ($vo['name']); ?></a>
                                 </td>

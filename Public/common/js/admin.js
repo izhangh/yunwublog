@@ -22,6 +22,16 @@ $(function() {
             }
         }
     });
+    //手机屏幕点击显示隐藏左侧菜单栏
+    $('#toggleLeftNav').click(function(e) {
+        e.preventDefault();
+        $('#leftNav').css({
+            'minHeight':'auto',
+            'borderBottom':"2px solid #e6e5e5"
+        });
+        $('#leftNav').toggle();
+        $('#leftNav').removeClass('hidden-xs');
+    })
     confirmModalClose();    //页面加载后初始化提示信息弹出框
     //监听删除按钮点击事件
     $('.' + CurrentPage + 'DelBtn').click(function(even) {

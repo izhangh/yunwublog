@@ -65,19 +65,19 @@ table td, table th {
     border-right: 1px solid #e6e5e5 ;
 }
 .hdc_header {
-    height: 110px;
-    line-height: 110px;
+    height: 84px;
+    line-height: 76px;
     background-color: #fff;
     border-top: 4px solid #0095CA;
     border-bottom: 1px solid #d9dadc;
-    margin-bottom:36px;
+    margin-bottom: 36px;
 }
 .hdc_header .logo {
     display: block;
-    height: 110px;
+    height: 80px;
     background: url(../image/logo.jpg) no-repeat left center;
-    background-size: 400px auto;
-    width: 400px;
+    background-size: 300px auto;
+    width: 300px;
 }
 .hdc_header a {
     line-height: 60px ;
@@ -132,7 +132,7 @@ table td, table th {
 /*重置bootstrap样式*/
 @media (min-width: 1300px) {
     .container {
-        width: 90%;
+        width: 1200px;
     }
     .p25{
         padding:25px;
@@ -148,6 +148,7 @@ table td, table th {
         background-color: #fff;
         border-top: 4px solid #0095CA;
         border-bottom: 1px solid #d9dadc;
+        margin-bottom:0;
     }
     .hdc_header .pull-right, .hdc_header .pull-left{
         text-align:center;
@@ -163,11 +164,25 @@ table td, table th {
     .hdc_header .logo {
         display: block;
         background: url(../image/logo.jpg) no-repeat center;
-        background-size: auto 60px;
+        background-size: auto 50px;
         width: 100%;
-        height:60px;
-        border-bottom:1px solid #ccc;
-        margin:0;
+        height: 60px;
+        border-bottom: 1px solid #ccc;
+        margin: 0;
+    }
+    .foot {
+        width: 100% ;
+        line-height: 25px ;
+        margin-top: 36px ;
+        background-color: #fff ;
+    }
+    .foot p {
+        padding:10px;
+        font-size: 12px ;
+        color: #333 ;
+        margin: 0px ;
+        border-top: 1px solid #ccc ;
+        border-bottom: 1px solid #ccc ;
     }
 }
 .thumbnail .caption {

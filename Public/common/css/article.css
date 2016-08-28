@@ -68,7 +68,7 @@ body {
     height: 100%;
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
     overflow: hidden;
     background: #fff;
     z-index: 100;
@@ -88,7 +88,7 @@ body {
 }
 #editormd-view {
     padding-top:40px;
-    padding-left: 40px;
-    padding-right: 330px;
+    padding-right: 40px;
+    padding-left: 330px;
     margin: 0;
 }

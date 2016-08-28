@@ -26,7 +26,8 @@ Class ArticleAction extends CommonAction
      */
     function _filter(&$map)
     {
-        $map['channel_id'] = array('EQ', I('channel_id')) ;
+        $channel = session('curMenu');
+        $map['channel'] = array('EQ', $channel['name']) ;
     }
 
     /**
