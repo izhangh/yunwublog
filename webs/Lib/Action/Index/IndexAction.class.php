@@ -43,8 +43,7 @@ class IndexAction extends CommonAction {
             $this->channelData = $this->get_channel_info(I('get.channel_id'));
             //获取文章信息
             $articleData = M('Article')->where(array('channel_id' => I('get.channel_id'), 'id' => I('get.id')))->find();
-            $articleData['content'] = html_out($articleData['content']);
-            $articleData['markdown'] = $articleData['markdown'];
+            $articleData['markdown'] = html_out($articleData['markdown']);
             $this->assign('articleData', $articleData);
             $this->display();
         } else {

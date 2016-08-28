@@ -65,7 +65,7 @@ class CommonAction extends Action {
         if(APP_DEBUG && !empty($sql)) {
             $return['sql'] = $sql;
         }
-        $this->ajaxReturn($return, $info, $status);
+        $this->ajaxReturn($return, $info, $status, 'json');
     }
 
 	/**
@@ -248,7 +248,6 @@ class CommonAction extends Action {
                 $this->_befor_handle($data);
             }
             $data = $model->create($data);
-            echo $model->getDbError();
             if(false === $data) {
 
                 $this->mtReturn(300, '失败，请不要重复提交', $model->getDbError().$model->_sql());

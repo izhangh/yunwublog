@@ -17,7 +17,7 @@
                             <div class="col-sm-9">
                                 <select name="classify_id" id="classify_id" class="form-control selectpicker" data-live-search="true">
                                     <foreach name="classify_list" item="v">
-                                        <option value="{$v.id}" <eq name="v.id" value="$currdata['classify_id']" ></eq>>{$v.name}</option>
+                                        <option value="{$v.id}" <eq name="v.id" value="$currdata['classify_id']" >selected</eq>>{$v.name}</option>
                                     </foreach>
                                 </select>
                             </div>
@@ -71,7 +71,6 @@
                                 <input type='hidden' name='_method_' id='_method_' value='{$method}' />
                                 <input type='hidden' name='channel_id' id='channel_id' value='{$channel_id}' />
                                 <textarea name="content" id="content" style="display: none;">{$currdata["content"]}</textarea>
-                                <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" id="btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}">取消</button>
                                 <button type="submit" class="btn btn-success btn-lg" autocomplete="off">提交</button>
                             </div>
                         </div>
@@ -109,7 +108,8 @@
                 //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
                 emoji : true,
                 taskList : true,
-                tocm : false,                // Using [TOCM]
+                toc : true,                // Using [TOCM]
+                tocm : true,                // Using [TOCM]
                 tex : true,                   // 开启科学公式TeX语言支持，默认关闭
                 flowChart : true,             // 开启流程图支持，默认关闭
                 sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
