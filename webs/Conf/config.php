@@ -27,7 +27,7 @@ return array(
 
 	'SHOW_PAGE_TRACE'			=> true,						//显示调试信息
     'SHOW_ERROR_MSG'        	=> true,            			// 显示错误信息
-    'SHOW_PAGE_TRACE'       	=> false,           			// 显示页面Trace信息
+    'SHOW_PAGE_TRACE'       	=> true,           			// 显示页面Trace信息
 	'FFDEBUG'					=> true,						//开启firebug调试
 
     //密码加密拼接字段

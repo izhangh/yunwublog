@@ -45,7 +45,7 @@
                                 <td class="hidden-xs">{$key}</td>
                                 <td class="hidden-xs">{$vo['classify']}</td>
                                 <td>
-                                    <a href="{:U('Index/Index/article', array('id' => $vo['id'], 'channel_id' =>  $vo['channel_id']))}" target="_blank">{$vo['name']}</a>
+                                    <a href="{:U('Index/Index/article', array('id' => $vo['id']))}" target="_blank">{$vo['name']}</a>
                                 </td>
                                 <td>{:date('Y-m-d', $vo['update_date'])}</td>
                                 <td>

@@ -38,7 +38,7 @@ class IndexAction extends CommonAction {
      */
     public function article()
     {
-        if (IS_GET && !empty(I('get.channel_id')) && !empty(I('get.id'))) {
+        if (IS_GET && !empty(I('get.id'))) {
             //获取栏目信息
             $this->channelData = $this->get_channel_info(I('get.channel_id'));
             //获取文章信息
