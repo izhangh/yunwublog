@@ -1,4 +1,5 @@
 <?php
+
 /* ----------------------------------------------------------------------
  * 创建作者: zhangh <izhangh@outlook.com>
  ------------------------------------------------------------------------
@@ -9,16 +10,20 @@
  * 升级记录：  
  ------------------------------------------------------------------------
 */
-class IndexAction extends CommonAction {
 
-    public function _initialize() {
+class IndexAction extends CommonAction
+{
+
+    public function _initialize()
+    {
         parent::_initialize();
     }
 
     /**
      *
      */
-    public function index() {
+    public function index()
+    {
         //查询单位总数
         $block[0]['name'] = '单位总数';
         $block[0]['class'] = 'bg-primary';
@@ -40,7 +45,9 @@ class IndexAction extends CommonAction {
         $this->assign('block', $block);
         $this->display();
     }
-    function delRuntime() {
+
+    function delRuntime()
+    {
         import("ORG.Io.Dir");
         Dir::delDir(RUNTIME_PATH, true);
         $this->mtReturn('200', '清除成功');

@@ -1,4 +1,5 @@
 <?php
+
 /* +----------------------------------------------------------------------
  * 创建作者: zhangh <izhangh@outlook.com>
  +----------------------------------------------------------------------
@@ -9,6 +10,7 @@
  * 升级记录：
  +----------------------------------------------------------------------
 */
+
 Class ClassifyAction extends CommonAction
 {
     /**
@@ -28,7 +30,7 @@ Class ClassifyAction extends CommonAction
      */
     function _filter(&$map)
     {
-        $map['channel_id'] = array('EQ', I('channel_id')) ;
+        $map['channel_id'] = array('EQ', I('channel_id'));
     }
 
     /**
@@ -43,6 +45,6 @@ Class ClassifyAction extends CommonAction
         $sortBy = 'sort';
         $asc = 'asc';
         $keysField = array('name');
-        return ;
+        return;
     }
 }

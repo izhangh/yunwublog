@@ -1,6 +1,6 @@
 <extend name="Public:base" />
 <block name="appendHeader">
-    <link rel="stylesheet" href="__PUBLIC__/editor.md-master/css/editormd.min.css" />
+    <link href="__PUBLIC__/umeditor1_2_2/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
 </block>
 <block name="appendContent">
     <div class="row">
@@ -59,18 +59,16 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-12">
-                                <div id="article-editormd">
-                                    <textarea name="markdown">{$currdata['markdown']}</textarea>
-                                </div>
+                            <label class="col-sm-2 control-label">文章内容:</label>
+                            <div class="col-sm-9">
+                                <textarea id="content" name="content" data-bv-field="content" style="width:100%;height:300px;">{$currdata['content']}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12 text-center">
                                 <input type='hidden' name='id' id='id' value="{$article_id}" />
-                                <input type='hidden' name='_method_' id='_method_' value='{$method}' />
+                                <input type='hidden' name='handle_method' id='handle_method' value='{$method}' />
                                 <input type='hidden' name='channel' id='channel' value='{$Think.session.curMenu.name}' />
-                                <textarea name="content" id="content" style="display: none;">{$currdata["content"]}</textarea>
                                 <button type="submit" class="btn btn-success btn-lg" autocomplete="off">提交</button>
                             </div>
                         </div>
@@ -81,62 +79,17 @@
     </div>
 </block>
 <block name="appendFooter">
-    <!--editormd-->
-    <script src="__PUBLIC__/editor.md-master/editormd.min.js"></script>
+    <!--ueditor-->
+    <script type="text/javascript" src="__PUBLIC__/umeditor1_2_2/umeditor.config.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/umeditor1_2_2/umeditor.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/umeditor1_2_2/lang/zh-cn/zh-cn.js"></script>
     <!--fileupload-->
     <script type="text/javascript" src="__PUBLIC__/common/lib/jquery/fileupload/jquery.ui.widget.js"></script>
     <script type="text/javascript" src="__PUBLIC__/common/lib/jquery/fileupload/jquery.iframe-transport.js"></script>
     <script type="text/javascript" src="__PUBLIC__/common/lib/jquery/fileupload/jquery.fileupload.js"></script>
     <script>
         $(document).ready(function() {
-            var testEditor = editormd("article-editormd", {
-                width: "100%",
-                height: 740,
-                path : '__PUBLIC__/editor.md-master/lib/',
-                theme : "dark",
-                previewTheme : "default",
-                editorTheme : "pastel-on-dark",
-                markdown : $('#text-markdown').text(),
-                codeFold : true,
-                //syncScrolling : false,
-                saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
-                searchReplace : true,
-                watch : false,                // 关闭实时预览
-                htmlDecode : "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
-                //toolbar  : false,             //关闭工具栏
-                toolbarAutoFixed : false,
-                //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
-                emoji : true,
-                taskList : true,
-                toc : true,                // Using [TOCM]
-                tocm : true,                // Using [TOCM]
-                tex : true,                   // 开启科学公式TeX语言支持，默认关闭
-                flowChart : true,             // 开启流程图支持，默认关闭
-                sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
-                dialogLockScreen : true,   // 设置弹出层对话框不锁屏，全局通用，默认为true
-                //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
-                //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
-                //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
-                //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
-                imageUpload : true,
-                imageFormats : ["jpg", "jpeg", "gif", "png"],
-                imageUploadURL : "{:U(GROUP_NAME.'/'.MODULE_NAME.'/uploadPic')}",
-                searchReplace : true, // default true
-                fontSize : "16px",
-                onload : function() {
-                    this.resize("100%", 640);
-                },
-                toolbarIcons : function() {
-                    return [
-                        "undo", "redo", "|",
-                        "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
-                        "list-ul", "list-ol", "hr", "|",
-                        "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
-                        "goto-line", "watch", "fullscreen", "||",
-                        "search", "help", "info"
-                    ]
-                },
-            });
+            UM.getEditor('content');
             $('#fileupload').fileupload({
                 url: "{:U(MODULE_NAME.'/uploadPic')}",
                 dataType: 'json',
@@ -171,6 +124,13 @@
                     validating: 'glyphicon glyphicon-refresh'
                 },
                 fields: {
+                    classify:{
+                        validators: {
+                            notEmpty: {
+                                message: '分类不能为空'
+                            }
+                        }
+                    },
                     name: {
                         validators: {
                             notEmpty: {
@@ -190,7 +150,7 @@
                 e.preventDefault();
                 var $form = $(e.target);    //获取表单实例
                 var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
-                if(testEditor.getMarkdown() == '') {
+                if(UM.getEditor('content').getContent() == '') {
                     confirmModalOpen('请输入文章内容');     // 提示信息
                     $('#' + CurrentPage + 'ConfirmModal').find('#btnConfirm' + CurrentPage).click(function() {
                         confirmModalClose();
@@ -200,7 +160,6 @@
                     //对modal处理
                     confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
                     //ajax处理
-                    $('#content').text(testEditor.getHTML());
                     ajaxDo($form.attr('action'), $form.serialize(), "POST");
                     if(ajaxReturnData.status == '200') {
                         confirmModalInfo(ajaxReturnData.info, ' fa-check ');

@@ -1,6 +1,7 @@
 <?php
+
 /* +----------------------------------------------------------------------
- * 创建作者: wuchao <775669127@qq.com>
+ * 创建作者: zhangh <izhangh@outlook.com>
  +----------------------------------------------------------------------
  * 创建日期：2016-08-10
  +----------------------------------------------------------------------
@@ -9,6 +10,7 @@
  * 升级记录：
  +----------------------------------------------------------------------
 */
+
 Class ArticleAction extends CommonAction
 {
     /**
@@ -27,7 +29,7 @@ Class ArticleAction extends CommonAction
     function _filter(&$map)
     {
         $channel = session('curMenu');
-        $map['channel'] = array('EQ', $channel['name']) ;
+        $map['channel'] = array('EQ', $channel['name']);
     }
 
     /**
@@ -39,27 +41,28 @@ Class ArticleAction extends CommonAction
      */
     public function _befor_index(&$field, &$keysField, &$sortBy, &$asc)
     {
-        if(empty(I('channel_id'))) {
+        if (empty(I('channel_id'))) {
             $this->error('参数丢失');
         }
         $sortBy = 'id';
         $asc = 'desc';
-        $keysField = array('name' ,'description' ,'content');
+        $keysField = array('name', 'description', 'content');
         $this->channel_id = I('channel_id');
-        return ;
+        return;
     }
 
     /**
      *文章页面
      */
-    public function page() {
+    public function page()
+    {
         $method = 'add';
         $pic_display = 'style="display: none;"';
-        if(!empty(I('get.article_id'))) {
+        if (!empty(I('get.article_id'))) {
             $currdata = $this->_find(M($this->dbname), array('id' => I('get.article_id')));
             $currdata['content'] = html_out($currdata['content']);
             $method = 'edit';
-            if(!empty($currdata['pic'])) {
+            if (!empty($currdata['pic'])) {
                 $pic_display = '';
             }
             $this->assign('currdata', $currdata);
@@ -69,43 +72,45 @@ Class ArticleAction extends CommonAction
         $this->assign('method', $method);
         $this->assign('pic_display', $pic_display);
         $this->assign('channel_id', I('get.channel_id'));
-        $this->display() ;
+        $this->display();
     }
 
     /**
      * @param $data
      * 编辑时旧的图片的处理
      */
-    public function _befor_handle(&$data) {
-        if(!empty(I('post.pic_old')) && !empty(I('post.pic'))) {
-            delFile('.'.I('post.pic_old'));
+    public function _befor_handle(&$data)
+    {
+        if (!empty(I('post.pic_old')) && !empty(I('post.pic'))) {
+            delFile('.' . I('post.pic_old'));
         }
-        if(empty($data['pic'])) {
+        if (empty($data['pic'])) {
             unset($data['pic']);
         }
-        return ;
+        return;
     }
 
     /**
      * 上传照片
      */
-    public function uploadPic() {
-        if(IS_POST && !empty($_FILES)) {
+    public function uploadPic()
+    {
+        if (IS_POST && !empty($_FILES)) {
             import('ORG.Net.UploadFile');
             $config = array(
-                'maxSize'   => 2097152,
-                'allowExts'      => array('jpg', 'png'),
-                'savePath'  => './Article/images/',
+                'maxSize' => 2097152,
+                'allowExts' => array('jpg', 'png'),
+                'savePath' => './Article/images/',
             );
             $upload = new UploadFile($config);// 实例化上传类
             // 上传文件
-            if(!$upload->upload()) {// 上传错误提示错误信息
+            if (!$upload->upload()) {// 上传错误提示错误信息
                 $data['message'] = $upload->getErrorMsg();
                 $data['success'] = 0;
             } else {// 上传成功 获取上传文件信息
-                $info =  $upload->getUploadFileInfo();
+                $info = $upload->getUploadFileInfo();
                 $data['message'] = '上传成功';
-                $data['url'] = substr($info[0]['savepath'].$info[0]['savename'], 1);
+                $data['url'] = substr($info[0]['savepath'] . $info[0]['savename'], 1);
                 $data['success'] = 1;
             }
             $this->ajaxReturn($data);
@@ -116,10 +121,11 @@ Class ArticleAction extends CommonAction
      * @param $id
      * 删除时图片的删除
      */
-    public function _befor_del(&$id) {
+    public function _befor_del(&$id)
+    {
         $pic = $this->_find(M($this->dbname), array('id' => $id));
-        if($pic['pic'] !== '') {
-            delFile('.'.$pic['pic']);
+        if ($pic['pic'] !== '') {
+            delFile('.' . $pic['pic']);
         }
     }
 }

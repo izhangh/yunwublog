@@ -76,7 +76,7 @@
             <div class="col-sm-12">
                 <input type='hidden' name='id' id='id' value='' />
                 <input type='hidden' name='channel_id' id='channel_id'' value='{$channel_id}' />
-                <input type='hidden' name='_method_' id='_method_' value='add' />
+                <input type='hidden' name='handle_method' id='handle_method' value='add' />
                 <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">提交</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}">取消</button>
             </div>
@@ -91,7 +91,7 @@
             var modal = $(this);
             if(action == 'add') {
                 modal.find('.modal-title').html("<i class='fa fa-plus-circle'></i>添加信息");
-                $('#_method_').val(action);
+                $('#handle_method').val(action);
             } else if(action == 'edit') {
                 modal.find('.modal-title').html("<i class='fa fa-edit'></i>修改信息");
                 var dataList = {:json_encode($list)};
@@ -99,7 +99,7 @@
                 $('#name').val(dataList[obj].name);
                 $('#sort').val(dataList[obj].sort);
                 $('#id').val(dataList[obj].id);
-                $('#_method_').val(action);
+                $('#handle_method').val(action);
             }
         })
         $(document).ready(function() {

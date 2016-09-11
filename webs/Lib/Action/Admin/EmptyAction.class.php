@@ -1,4 +1,5 @@
 <?php
+
 /* +----------------------------------------------------------------------
  * 创建作者: zhangh <izhang@outlook.com>
  +----------------------------------------------------------------------
@@ -9,9 +10,12 @@
  * 升级记录：
  +----------------------------------------------------------------------
 */
-    class EmptyAction extends Action{
 
-        public function _empty() {
-            redirect(U('Index/Index/index'));
-        }
+class EmptyAction extends Action
+{
+
+    public function _empty()
+    {
+        redirect(U('Index/Index/index'));
     }
+}

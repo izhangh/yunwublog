@@ -1,0 +1,228 @@
+<extend name="Public:base" />
+<block name="appendHeader">
+    <link rel="stylesheet" href="__PUBLIC__/editor.md-master/css/editormd.min.css" />
+</block>
+<block name="appendContent">
+    <div class="row">
+        <div class="col-md-12 p15 p25">
+            <div class="page-header clearfix">
+                <h3 class="pull-left nomargin"><i class='fa fa-file-text-o'></i>{$Think.session.curMenu.name}</h3>
+            </div>
+            <div class="panel panel-default mt25">
+                <div class="panel panel-heading text-center"><h2 class="panel-title fontsize20">{$Think.session.curMenu.name}</h2></div>
+                <div class="panel-body">
+                    <form class="form-horizontal" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm" name="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/handle')}" method="post">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属分类:</label>
+                            <div class="col-sm-9">
+                                <select name="classify" id="classify" class="form-control selectpicker" data-live-search="true">
+                                    <foreach name="classify_list" item="v">
+                                        <option value="{$v.name}" <eq name="v.name" value="$currdata['classify']" >selected</eq>>{$v.name}</option>
+                                    </foreach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">标题:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="name" name="name" data-bv-field="name" value="{$currdata['name']}" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">关键字:</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" style="resize:vertical;" id="description" name="description" data-bv-field="description" value="" >{$currdata['description']}</textarea>
+                                <p class="help-block">(关键字之间用 | 分割)</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">上传照片:</label>
+                            <div class="col-sm-9">
+                                <span class="btn btn-info fileinput-button">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>选择文件</span>
+                                    <input id="fileupload" type="file" name="fileupload">
+                                    <input type="hidden" name="pic" id="pic" value="">
+                                </span>
+                                <p style="display: inline-block;">只支持jpg、jpeg、png格式，大小不能超过2M</p>
+                                <div id="progress" class="progress nomargin">
+                                    <div class="progress-bar progress-bar-success"></div>
+                                </div>
+                                <div class="alert alert-danger nomargin" id="pic_tip_info" style="display:none;" role="alert"></div>
+                            </div>
+                        </div>
+                        <div class="form-group" id="pic_div" {$pic_display}>
+                            <label class="col-sm-2 control-label">已有照片:</label>
+                            <div class="col-sm-10">
+                                <img src="{:__ROOT__.$currdata['pic']}" alt="" id="pic_img" width="100" height="100" />
+                                <input type="hidden" name="pic_old" id="pic_old" value="{$currdata['pic']}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div id="article-editormd">
+                                    <textarea name="markdown">{$currdata['markdown']}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 text-center">
+                                <input type='hidden' name='id' id='id' value="{$article_id}" />
+                                <input type='hidden' name='handle_method' id='handle_method' value='{$method}' />
+                                <input type='hidden' name='channel' id='channel' value='{$Think.session.curMenu.name}' />
+                                <textarea name="content" id="content" style="display: none;">{$currdata["content"]}</textarea>
+                                <button type="submit" class="btn btn-success btn-lg" autocomplete="off">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="appendFooter">
+    <!--editormd-->
+    <script src="__PUBLIC__/editor.md-master/editormd.min.js"></script>
+    <!--fileupload-->
+    <script type="text/javascript" src="__PUBLIC__/common/lib/jquery/fileupload/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/common/lib/jquery/fileupload/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/common/lib/jquery/fileupload/jquery.fileupload.js"></script>
+    <script>
+        $(document).ready(function() {
+            var testEditor = editormd("article-editormd", {
+                width: "100%",
+                height: 740,
+                path : '__PUBLIC__/editor.md-master/lib/',
+                theme : "dark",
+                previewTheme : "default",
+                editorTheme : "pastel-on-dark",
+                markdown : $('#text-markdown').text(),
+                codeFold : true,
+                //syncScrolling : false,
+                saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
+                searchReplace : true,
+                watch : false,                // 关闭实时预览
+                htmlDecode : "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
+                //toolbar  : false,             //关闭工具栏
+                toolbarAutoFixed : false,
+                //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
+                emoji : true,
+                taskList : true,
+                toc : true,                // Using [TOCM]
+                tocm : true,                // Using [TOCM]
+                tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+                flowChart : true,             // 开启流程图支持，默认关闭
+                sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+                dialogLockScreen : true,   // 设置弹出层对话框不锁屏，全局通用，默认为true
+                //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
+                //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
+                //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
+                //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
+                imageUpload : true,
+                imageFormats : ["jpg", "jpeg", "gif", "png"],
+                imageUploadURL : "{:U(GROUP_NAME.'/'.MODULE_NAME.'/uploadPic')}",
+                searchReplace : true, // default true
+                fontSize : "16px",
+                onload : function() {
+                    this.resize("100%", 640);
+                },
+                toolbarIcons : function() {
+                    return [
+                        "undo", "redo", "|",
+                        "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                        "list-ul", "list-ol", "hr", "|",
+                        "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
+                        "goto-line", "watch", "fullscreen", "||",
+                        "search", "help", "info"
+                    ]
+                },
+            });
+            $('#fileupload').fileupload({
+                url: "{:U(MODULE_NAME.'/uploadPic')}",
+                dataType: 'json',
+                autoUpload: true,
+                done: function (e, data) {
+                    $('#pic_tip_info').html(data.result.message).show();
+                    if(data.result.status == '0') {
+                        $('#fileupload').fileupload('enable');
+                        $('#fileupload').removeAttr('disabled');
+                    } else if(data.result.status == '1') {
+                        var path = data.result.url;
+                        $('#pic').val(path);
+                        $('#pic_img').attr('src', '__ROOT__' + path);
+                        $('#pic_div').show();
+                        $('#fileupload').fileupload('disable');
+                        $('#fileupload').attr('disabled', 'disabled');
+                    }
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                    );
+                }
+            }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+            $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator({
+                message: '您输入的信息有误，请仔细检查！',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    classify:{
+                        validators: {
+                            notEmpty: {
+                                message: '分类不能为空'
+                            }
+                        }
+                    },
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: '标题不能为空'
+                            }
+                        }
+                    },
+                    description: {
+                        validators: {
+                            notEmpty: {
+                                message: '简介不能为空'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function(e) {
+                e.preventDefault();
+                var $form = $(e.target);    //获取表单实例
+                var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+                if(testEditor.getMarkdown() == '') {
+                    confirmModalOpen('请输入文章内容');     // 提示信息
+                    $('#' + CurrentPage + 'ConfirmModal').find('#btnConfirm' + CurrentPage).click(function() {
+                        confirmModalClose();
+                    })
+                    $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false);
+                } else {
+                    //对modal处理
+                    confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
+                    //ajax处理
+                    $('#content').text(testEditor.getHTML());
+                    ajaxDo($form.attr('action'), $form.serialize(), "POST");
+                    if(ajaxReturnData.status == '200') {
+                        confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+                        setTimeout(function() {
+                            window.location.replace("{:U(GROUP_NAME.'/'.MODULE_NAME.'/index' ,array('channel_id' => $channel_id))}");
+                        }, 1000);
+                    } else if(ajaxReturnData.status == '300') {
+                        confirmModalInfo(ajaxReturnData.info, '');
+                        setTimeout(function() {
+                            $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false);
+                            confirmModalClose();
+                        }, 1000);
+                    }
+                }
+            });
+        });
+    </script>
+</block>

@@ -1,4 +1,5 @@
 <?php
+
 /* +----------------------------------------------------------------------
  * 创建作者: wuchao <775669127@qq.com>
  +----------------------------------------------------------------------
@@ -9,32 +10,37 @@
  * 升级记录：
  +----------------------------------------------------------------------
  */
-Class UserAction extends CommonAction {
 
-    public function _initialize() {
+Class UserAction extends CommonAction
+{
+
+    public function _initialize()
+    {
         parent::_initialize();
         $this->dbname = 'Manage';
     }
 
-    public function index() {
+    public function index()
+    {
         $data = M($this->dbname)->where(array('id' => session('userId')))->find();
-        $this->assign('id' ,$data['id']);
-        $this->assign('data' ,$data);
+        $this->assign('id', $data['id']);
+        $this->assign('data', $data);
         $this->display();
     }
 
-    public function _befor_handle(&$data) {
-        if(!empty($data['pwd'])) {
+    public function _befor_handle(&$data)
+    {
+        if (!empty($data['pwd'])) {
             $data['pwd'] = encrypt($data['pwd']);
         } else {
             unset($data['pwd']);
         }
-        if(!empty($data['manage_name'])) {
+        if (!empty($data['manage_name'])) {
             session('userRealName', $data['manage_name']);
         }
-        if(!empty($data['img'])) {
+        if (!empty($data['img'])) {
             session('userImg', $data['img']);
         }
-        return ;
+        return;
     }
 }

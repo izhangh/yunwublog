@@ -93,7 +93,7 @@
         <div class="form-group text-center">
             <div class="col-sm-12">
                 <input type='hidden' name='id' id='id' value='' />
-                <input type='hidden' name='_method_' id='_method_' value='add' />
+                <input type='hidden' name='handle_method' id='handle_method' value='add' />
                 <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">提交</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}">取消</button>
             </div>
@@ -115,7 +115,7 @@
                 $('#pic_div').hide();
                 $('#pic_img').attr('src', '')
                 modal.find('.modal-title').html("<i class='fa fa-plus-circle'></i>添加信息");
-                $('#_method_').val(actionMethod);
+                $('#handle_method').val(actionMethod);
             } else if(actionMethod == 'edit') {
                 modal.find('.modal-title').html("<i class='fa fa-edit'></i>修改信息");
                 var dataList = {:json_encode($list)};
@@ -130,7 +130,7 @@
                 $('#description').val(dataList[obj].description);
                 $('#alink').val(dataList[obj].alink);
                 $('#id').val(dataList[obj].id);
-                $('#_method_').val(actionMethod);
+                $('#handle_method').val(actionMethod);
             }
         })
 
@@ -207,7 +207,7 @@
                 e.preventDefault();
                 var $form = $(e.target);    //获取表单实例
                 var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
-                if(($('#_method_').val() == 'add' && $('#pic').val() == '') || ($('#_method_').val() == 'edit' && $('#pic_old').val() == '' && $('#pic').val() == '')) {
+                if(($('#handle_method').val() == 'add' && $('#pic').val() == '') || ($('#handle_method').val() == 'edit' && $('#pic_old').val() == '' && $('#pic').val() == '')) {
                     $('#pic_tip_info').html("请上传图片").show();
                     $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false);
                 } else {

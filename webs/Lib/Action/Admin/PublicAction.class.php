@@ -1,4 +1,5 @@
 <?php
+
 /* +----------------------------------------------------------------------
  * 创建作者: zhangh <izhang@outlook.com>
  +----------------------------------------------------------------------
@@ -9,16 +10,20 @@
  * 升级记录：
  +----------------------------------------------------------------------
 */
-class PublicAction extends Action {
-    
-    public function _empty() {
+
+class PublicAction extends Action
+{
+
+    public function _empty()
+    {
         redirect(U('Index/Index/index'));
     }
 
     /**
      *退出登录
      */
-    public function logout() {
+    public function logout()
+    {
         session('[destroy]');
         redirect(U('Index/Index/index'));
     }
