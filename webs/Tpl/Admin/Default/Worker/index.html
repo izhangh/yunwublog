@@ -1,0 +1,331 @@
+<extend name="Public:base" />
+<block name="appendHeader"></block>
+<block name="appendContent">
+    <div class="row">
+        <div class="col-md-12 p15 p25">
+            <div class="page-header clearfix">
+                <h3 class="pull-left nomargin"><i class='fa fa-{$Think.session.curMenu.icon}'></i>{$Think.session.curMenu.name}</h3>
+            </div>
+            <div class="bs-callout bs-callout-info" id="callout-type-b-i-elems">
+                <p>1、已转出员工直接删除帐号即可,直接删除不会对已有检查结果造成影响；</p>
+                <p>2、新转入员工直接添加帐号即可；</p>
+                <p>3、新添加职工密码默认为身份证号后六位,若有字母 X ,则是小写的 x。</p>
+                <p class="colorf00">4、转入转出可直接找医院管理员进行处理。</p>
+            </div>
+            <!-- search begin 如果需要特殊处理，粘贴过来就行 -->
+            <div class="clearfix">
+                <form class="form-horizontal" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/'.ACTION_NAME)}" method="POST">
+                    <div class="form-group">
+                        <div class="col-xs-6 col-sm-6 col-md-4">
+                            <input class="pull-left form-control" name="keys" id="keys" value="{$Think.request.keys}" placeholder="请输入关键字">
+                        </div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 nopadding">
+                            <button type="submit" class="pull-left btn btn-primary">搜索</button>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4 col-md-offset-2 text-right">
+                            <a target="_blank" type="button" class="pull-right btn btn-warning" href="{:U(GROUP_NAME.'/Worker/printsheet',array('keys' => $_REQUEST['keys']))}"><i class="fa fa-share-square-o nomargin"></i> 打印</a>
+                            <a type="button" class="pull-right btn btn-info" href="{:U(GROUP_NAME.'/Worker/workerExport',array('keys' => $_REQUEST['keys']))}"><i class="fa fa-share-square-o nomargin"></i> 导出</a>
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal" data-action="add" data-backdrop="static" data-keyboard="false"><i class="fa fa-plus nomargin"></i>&nbsp;添加</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- search end -->
+            <div class="panel panel-default">
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-advanced tablesorter tb-sticky-header">
+                        <thead>
+                        <tr>
+                            <th class="hidden-xs" width="40">#</th>
+                            <th class="hidden-xs" width="80">照片</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th class="hidden-xs">联系方式</th>
+                            <th>状态</th>
+                            <th width="90">密码重置</th>
+                            <th width="150">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <volist name="list" id="vo" key="key">
+                            <tr>
+                                <td class="hidden-xs">{$key}</td>
+                                <td class="hidden-xs">
+                                    <notempty name="vo['pic']">
+                                        <img src="__ROOT__{$vo['pic']}" alt="头像" width="50" height="50">
+                                        <else />
+                                        <img src="__PUBLIC__/common/image/default-user-50-50.png">
+                                    </notempty>
+                                </td>
+                                <td>{$vo['name']}</td>
+                                <td>{$vo['gender_name']}</td>
+                                <td class="hidden-xs">{$vo['phone']}</td>
+                                <td>{$vo['status_name']}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary {:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}DelBtn" data-info="您确定要将该账号的密码重置为身份证号后六位吗?" data-objurl="{:U(GROUP_NAME.'/'.MODULE_NAME.'/resetPwd', array('id' => $vo['id']))}">密码重置</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal" data-obj="{$key}" data-whatever="@edit_{$vo['id']}" data-action="edit" data-backdrop="static" data-keyboard="false">修改</button>
+                                    <button class="btn btn-danger {:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}DelBtn" data-info="您确定要删除嘛?" data-objurl="{:U(GROUP_NAME.'/'.MODULE_NAME.'/del', array('id' => $vo['id']))}">删除</button>
+                                </td>
+                            </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {$show}
+        </div>
+    </div>
+</block>
+<block name="appendHandleFrom">
+    <form class="form-horizontal" id="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm" name="{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm" action="{:U(GROUP_NAME.'/'.MODULE_NAME.'/handle')}" method="post" enctype="multipart/form-data">
+        <div class="form-group" id="pic_div" style="display: none;">
+            <label class="col-sm-2 control-label">已有照片:</label>
+            <div class="col-sm-10">
+                <img src="" alt="" id="pic_img" width="100" height="100" />
+                <input type="hidden" name="pic_old" id="pic_old" value="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">上传照片:</label>
+            <div class="col-sm-10">
+                <span class="btn btn-info fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>选择文件</span>
+                    <input id="fileupload" type="file" name="fileupload">
+                    <input type="hidden" name="pic" id="pic" value="">
+                </span>
+                <p style="display: inline-block;">只支持jpg、jpeg、png格式，大小不能超过100KB</p>
+                <div id="progress" class="progress nomargin">
+                    <div class="progress-bar progress-bar-success"></div>
+                </div>
+                <div class="alert alert-danger nomargin" id="pic_tip_info" style="display:none;" role="alert"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">姓名:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" name="name" data-bv-field="name" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">身份证号:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="id_card_no" name="id_card_no" data-bv-field="id_card_no" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">职务:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="job" name="job" data-bv-field="job" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">个人身份:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="identity" name="identity" data-bv-field="identity" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">联系电话:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="phone" name="phone" data-bv-field="phone" value="" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">婚姻状况:</label>
+            <div class="col-sm-10">
+                <volist name="marital_status_list" id="marital_v" key="marital_k">
+                    <label class="radio-inline">
+                        <input type="radio" name="marital_status" id="marital_status_{$marital_v['id']}" value="{$marital_v['name']}" <eq name="marital_k" value="1">checked</eq>> {$marital_v['name']}
+                    </label>
+                </volist>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">民族:</label>
+            <div class="col-sm-10">
+                <select name="nation" id="nation" data-bv-field="nation" class="form-control selectpicker" data-live-search="true">
+                    <foreach name="nation_list" item="v">
+                        <option value="{$v.name}" <eq name="key" value="0">selected</eq>>{$v.name}</option>
+                    </foreach>
+                </select>
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <div class="col-sm-12">
+                <input type='hidden' name='id' id='id' value='' />
+                <input type='hidden' name='handle_method' id='handle_method' value='add' />
+                <input type='hidden' name='group_client_id' id='group_client_id' value='{$Think.session.userId}' />
+                <button type="submit" class="btn btn-success" data-loading-text="正在提交..." autocomplete="off">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}">取消</button>
+            </div>
+        </div>
+    </form>
+</block>
+<block name="appendFooter">
+    <script src="__PUBLIC__/common/lib/jquery/fileupload/jquery.ui.widget.js"></script>
+    <script src="__PUBLIC__/common/lib/jquery/fileupload/jquery.iframe-transport.js"></script>
+    <script src="__PUBLIC__/common/lib/jquery/fileupload/jquery.fileupload.js"></script>
+    <script>
+        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var actionMethod = button.data('action');
+            var modal = $(this);
+            $('#fileupload').fileupload('enable');
+            $('#fileupload').removeAttr('disabled');
+            if(actionMethod == 'add') {
+                $('#pic_div').hide();
+                $('#pic_img').attr('src', '');
+                $('#pic_old').val('');
+                $('input[name="marital_status"]').eq(0).prop("checked", true);
+                modal.find('.modal-title').html("<i class='fa fa-plus-circle'></i>添加信息");
+                $('#handle_method').val(actionMethod);
+            } else if(actionMethod == 'edit') {
+                modal.find('.modal-title').html("<i class='fa fa-edit'></i>修改信息");
+                var dataList = {:json_encode($list)};
+                var obj = parseInt(button.data('obj')) - 1;
+
+                if(dataList[obj].pic) {
+                    $('#pic_div').show();
+                    $('#pic_img').attr('src', '__ROOT__' + dataList[obj].pic);
+                    $('#pic_old').val(dataList[obj].pic);
+                }
+                $('#name').val(dataList[obj].name);
+                $('#id_card_no').val(dataList[obj].id_card_no);
+                $('#phone').val(dataList[obj].phone);
+                $('input[name="marital_status"][value="' + dataList[obj].marital_status + '"]').prop("checked", true);
+                $('#nation').selectpicker('val', dataList[obj].nation);
+                $('#identity').val(dataList[obj].identity);
+                $('#job').val(dataList[obj].job);
+                $('#id').val(dataList[obj].id);
+                $('#handle_method').val(actionMethod);
+            }
+        })
+
+        $(document).ready(function() {
+            $('#btnCancelHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}').bind('click', function() {
+                $('#pic_div').hide();
+                $('#pic_tip_info').hide();
+                $('#pic_img').attr('src', '');
+                $('#pic_old').val('');
+                $('#progress .progress-bar').css('width', '0%');
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+            })
+            $('#btnCloseHandleForm{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}').bind('click', function() {
+                $('#pic_div').hide();
+                $('#pic_tip_info').hide();
+                $('#pic_img').attr('src', '');
+                $('#pic_old').val('');
+                $('#progress .progress-bar').css('width', '0%');
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator('disableSubmitButtons', false).bootstrapValidator('resetForm', true);             // Reset the form
+            });
+            $('#fileupload').fileupload({
+                url: "{:U(MODULE_NAME.'/uploadPic')}",
+                dataType: 'json',
+                autoUpload: true,
+                done: function (e, data) {
+                    $('#pic_tip_info').html(data.result.info).show();
+                    if(data.result.status == '300') {
+                        $('#fileupload').fileupload('enable');
+                        $('#fileupload').removeAttr('disabled');
+                    } else if(data.result.status == '200') {
+                        var path = data.result.data;
+                        $('#pic').val(path);
+                        $('#pic_img').attr('src', '__ROOT__' + path);
+                        $('#pic_div').show();
+                        $('#fileupload').fileupload('disable');
+                        $('#fileupload').attr('disabled', 'disabled');
+                    }
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                    );
+                }
+            }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+            $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleForm').bootstrapValidator({
+                message: '您输入的信息有误，请仔细检查！',
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: '姓名必须'
+                            }
+                        }
+                    },
+                    id_card_no: {
+                        validators: {
+                            callback: {
+                                message: '请输入18位或15位合法身份证号',
+                                callback: function (value, validator) {
+                                    if (validator.getFieldElements('id_card_no').val() == '') return false;
+                                    if (validator.getFieldElements('id_card_no').val().length != 18 && validator.getFieldElements('id_card_no').val().length != 15) return false;
+                                    var data = {
+                                        id_card_no: validator.getFieldElements('id_card_no').val(),
+                                        type: validator.getFieldElements('handle_method').val(),
+                                        obj: validator.getFieldElements('id').val()
+                                    };
+                                    ajaxDo("{:U(MODULE_NAME.'/checkIdCard')}", data, "POST");
+                                    if (!ajaxReturnData.valid)
+                                        $('small[data-bv-for="id_card_no"]').html(ajaxReturnData.message);
+                                    return ajaxReturnData.valid;
+                                }
+                            }
+                        }
+                    },
+                    phone: {
+                        validators: {
+                            notEmpty: {
+                                message: '联系电话必须'
+                            }
+                        }
+                    },
+                    level_id: {
+                        validators: {
+                            notEmpty: {
+                                message: '职级必须'
+                            }
+                        }
+                    }
+                }
+            }).on('success.form.bv', function(e) {
+                e.preventDefault();
+                var $form = $(e.target);    //获取表单实例
+                var bv = $form.data('bootstrapValidator');  //获取bootstrap实例
+                //对modal处理
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').find('button').attr('disabled', true);     // 禁用所有删除按钮
+                $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').modal('hide');   //隐藏HandleFormModal
+                confirmModalOpen('数据正在处理，请稍等...', '0', ' fa-spinner fa-spin ');     // 提示信息
+                //ajax处理
+                ajaxDo($form.attr('action'), $form.serialize(), "POST");
+                if(ajaxReturnData.status == '200') {
+                    confirmModalInfo(ajaxReturnData.info, ' fa-check ');
+                    setTimeout(function() {
+                        window.location.replace(window.location.href);
+                    }, 1000);
+                } else if(ajaxReturnData.status == '300') {
+                    confirmModalInfo(ajaxReturnData.info, '');
+                    setTimeout(function() {
+                        confirmModalClose();
+                        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').find('button').removeAttr('disabled');     // 恢复按钮
+                        $('#{:GROUP_NAME}{:MODULE_NAME}{:ACTION_NAME}HandleFormModal').modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });   //显示HandleFormModal，保持原样
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</block>

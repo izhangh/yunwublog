@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script language="javascript" src="__PUBLIC__/common/lib/jquery/jqprint/jquery-1.4.4.min.js"></script>
+    <script language="javascript" src="__PUBLIC__/common/lib/jquery/jqprint/jquery.jqprint-0.3.js"></script>
+    <title>打印</title>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#printbtn").click(function () {
+                $("#content").jqprint();
+            });
+        });
+    </script>
+</head>
+<body style="padding-top:50px ;">
+<div class="button" align="center" style="margin:0 auto;">
+    <input type="button" style="width: 100px;height: 40px;" id="printbtn" value="打印"/>
+</div>
+<div id="content">
+    <table algin="center" s style=" margin:10px; border:1px solid #000; border-collapse:collapse; margin:5px auto ;">
+        <thead>
+        <tr>
+            <th colspan="14" align="center" style="font-size:18px;font-weight:700; text-align:center;">
+                {$group_client['name']}体检名单
+            </th>
+        </tr>
+        <tr>
+            <th style=" border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">姓名</th>
+            <th style=" border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">性别</th>
+            <th style=" border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">身份证号</th>
+            <th style=" border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">所选套餐</th>
+            <th style=" border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">体检时间</th>
+            <th style=" border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">体检状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <volist name="list" id="vo">
+            <tr>
+                <td style="padding:5px 15px ; border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">
+                    {$vo['worker_name']}
+                </td>
+                <td style="padding:5px 15px ; border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">
+                    {$vo['gender_name']}
+                </td>
+                <td style="padding:5px 15px ; border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">
+                    {$vo['worker_id_card_no']}
+                </td>
+                <td style="padding:5px 15px ; border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">
+                    {$vo['check_combo_name']}
+                </td>
+                <td style="padding:5px 15px ; border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">
+                    {$vo['check_date']}
+                </td>
+                <td style="padding:5px 15px ; border:1px solid #000; border-collapse:collapse; text-align:center;font-size:15px;">
+                    {$vo['status_name']}
+                </td>
+            </tr>
+        </volist>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -146,6 +146,10 @@ class CommonAction extends Action
         }
         $list = $model->field($field)->where($map)->order("`" . $p['order'] . "` " . $p['sort'])->limit($page->firstRow . ', ' . $page->listRows)->select();
 
+        if(method_exists($this, 'get_index_sql')) {
+            $this->get_index_sql($model->_sql());
+        }
+
         if (method_exists($this, '_afte_list')) {
             $this->_afte_list($list);
         }

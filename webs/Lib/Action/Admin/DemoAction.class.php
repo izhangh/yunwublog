@@ -74,6 +74,14 @@ class DemoAction extends CommonAction
     }
 
     /**
+     * 获取列表查询的sql语句，用于调试所用
+     * @param $sql
+     */
+    public function get_index_sql($sql) {
+        echo $sql;
+    }
+
+    /**
      * 添加、修改页面显示前的操作
      */
     public function _befor_handle()
